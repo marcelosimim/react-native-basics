@@ -11,6 +11,10 @@ export default function App() {
     setModalIsVisible(true)
   }
 
+  function endAddGoalHandler() {
+    setModalIsVisible(false)
+  }
+
   function addGoalHandler(enteredGoalText) { 
       setCourseGoals(currentCourseGoals =>  [
         ...currentCourseGoals, 
@@ -22,6 +26,8 @@ export default function App() {
     setCourseGoals(currentCourseGoals => {
       return currentCourseGoals.filter((goal) => goal.id !== id)
     })
+
+    endAddGoalHandler()
   }
 
   return (
@@ -32,11 +38,19 @@ export default function App() {
         onPress={startAddGoalHandler} 
       />
 
-      <GoalInput onAddGoal={addGoalHandler} visible={modalIsVisible}/>
+      <GoalInput 
+        onAddGoal={addGoalHandler} 
+        onCancel={endAddGoalHandler}
+        visible={modalIsVisible}
+      />
 
       <View style={styles.goalsContainer}>
         <FlatList data={courseGoals} renderItem={(itemData) => {
-          return <GoalItem text={itemData.item.text} onDeleteItem={deleteGoalHandler} id={itemData.item.id}/>
+          return <GoalItem 
+                  text={itemData.item.text} 
+                  onDeleteItem={deleteGoalHandler} 
+                  id={itemData.item.id}
+                />
         }} 
         keyExtractor={(item, index) => {
           return item.id
